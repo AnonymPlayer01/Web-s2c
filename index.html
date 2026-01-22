@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Network Monitoring</title>
+    
+    <style>
+        /* BAGIAN CSS - MENGATUR TAMPILAN */
+        body {
+            font-family: sans-serif;
+            background-color: #1a1a2e; /* Warna gelap ala hacker */
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #0f3460;
+            padding-bottom: 10px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .server-card {
+            background-color: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 10px;
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+
+        .icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        /* Indikator Status */
+        .status-box {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        .online {
+            background-color: #2ecc71; /* Hijau */
+            color: black;
+        }
+
+        .offline {
+            background-color: #e74c3c; /* Merah */
+            color: white;
+        }
+
+        .maintenance {
+            background-color: #f1c40f; /* Kuning */
+            color: black;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #e94560;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>NETWORK STATUS DASHBOARD - SMK TKJ</h1>
+
+    <div class="container">
+        
+        <!-- Server 1: Mikrotik Gateway -->
+        <div class="server-card" id="server1">
+            <div class="icon">📡</div>
+            <h3>Mikrotik Gateway</h3>
+            <p>IP: 192.168.1.1</p>
+            <p>Uptime: <span class="uptime">24 Jam</span></p>
+            <div class="status-box online" id="status1">STATUS: ONLINE</div>
+        </div>
+
+        <!-- Server 2: Server CBT Ujian -->
+        <div class="server-card" id="server2">
+            <div class="icon">💻</div>
+            <h3>Server CBT Ujian</h3>
+            <p>IP: 192.168.10.200</p>
+            <p>Uptime: <span class="uptime">5 Jam</span></p>
+            <div class="status-box offline" id="status2">STATUS: OFFLINE</div>
+        </div>
+
+        <!-- Server 3: NAS File Server -->
+        <div class="server-card" id="server3">
+            <div class="icon">💾</div>
+            <h3>NAS File Server</h3>
+            <p>IP: 192.168.50.5</p>
+            <p>Uptime: <span class="uptime">0 Jam</span></p>
+            <div class="status-box maintenance" id="status3">STATUS: MAINTENANCE</div>
+        </div>
+
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <button onclick="refreshAllServers()">REFRESH STATUS</button>
+    </div>
+
+    <script>
+        // Fungsi untuk memperbarui status semua server menjadi ONLINE
+        function refreshAllServers() {
+            // Ambil semua elemen status
+            const status1 = document.getElementById('status1');
+            const status2 = document.getElementById('status2');
+            const status3 = document.getElementById('status3');
+            
+            // Ambil semua elemen uptime
+            const uptimes = document.querySelectorAll('.uptime');
+            
+            // Reset semua status menjadi ONLINE
+            status1.className = 'status-box online';
+            status1.textContent = 'STATUS: ONLINE';
+            
+            status2.className = 'status-box online';
+            status2.textContent = 'STATUS: ONLINE';
+            
+            status3.className = 'status-box online';
+            status3.textContent = 'STATUS: ONLINE';
+            
+            // Perbarui semua uptime menjadi nilai acak yang lebih tinggi
+            uptimes.forEach(uptime => {
+                // Generate random uptime antara 1-30 jam
+                const randomHours = Math.floor(Math.random() * 30) + 1;
+                uptime.textContent = `${randomHours} Jam`;
+            });
+            
+            // Tampilkan pesan konfirmasi
+            alert('Semua server telah diperbarui menjadi ONLINE!');
+            
+            // Ubah warna tombol sementara untuk feedback visual
+            const button = document.querySelector('button');
+            const originalColor = button.style.backgroundColor;
+            const originalText = button.textContent;
+            
+            button.style.backgroundColor = '#2ecc71';
+            button.textContent = '✓ DIPERBARUI';
+            
+            // Kembalikan ke warna asli setelah 2 detik
+            setTimeout(() => {
+                button.style.backgroundColor = '#e94560';
+                button.textContent = 'REFRESH STATUS';
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
